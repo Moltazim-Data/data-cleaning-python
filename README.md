@@ -1,4 +1,3 @@
-# data-cleaning-python
 # 🧹 Data Cleaning with Python — Beginner Portfolio Project
 
 This project demonstrates a complete data-cleaning workflow using **Python** and **Pandas**.  
