@@ -1,49 +1,33 @@
 # Data Cleaning with Python
 
-A beginner-friendly data preparation project using Python and pandas. The workflow covers inspecting a raw customer dataset, identifying common quality issues, cleaning fields, and exporting a cleaned dataset.
+A small data preparation project using Python and pandas. The workflow inspects a CSV, removes exact duplicate rows, normalizes column names, imputes numeric missing values with medians and non-numeric missing values with modes, and exports a cleaned file plus a quality summary.
 
-## Workflow
+## Files
 
-- Inspect dataset shape, column names, types, and missing values.
-- Identify duplicate rows.
-- Standardize column names.
-- Handle missing values using the rules implemented in the script.
-- Export the cleaned data for downstream analysis.
-
-## Project structure
-
-```text
-data-cleaning-python/
-├── data/
-│   ├── customer_data.csv
-│   └── customer_data_cleaned.csv
-├── data_cleaning.py
-├── notebooks/
-│   └── data_cleaning.ipynb
-├── .gitignore
-└── README.md
-```
+- `data/customer_data.csv` — bundled sample input. **Despite the legacy filename, its columns describe restaurant bills/tips (for example `total_bill`, `tip`, `sex`, `smoker`, `day`, `time`, and `size`), not a customer CRM table.**
+- `data_cleaning.py` — reproducible cleaning script.
+- `notebooks/data_cleaning.ipynb` — step-by-step notebook.
+- `tests/test_data_cleaning.py` — checks duplicate handling, missing-value behavior, and column-name collisions.
+- `data/customer_data_cleaned.csv` and `data/cleaning_summary.json` — generated outputs.
 
 ## Run
 
-Use Python 3.10+ and install pandas if it is not already available:
+Python 3.10+ recommended. From the repository root:
 
 ```bash
-python -m pip install pandas
+python -m pip install pandas pytest
 python data_cleaning.py
+python -m pytest -q
 ```
 
-Run the script from the repository root so relative paths to `data/` resolve correctly. Review the cleaning rules in `data_cleaning.py` before applying the workflow to a different dataset; missing-value treatment should be chosen based on field meaning, not applied blindly.
+The script uses paths relative to its own file, so it can be launched from another working directory too.
 
-## Before using the output
+## Cleaning rules and limitations
 
-- Compare row counts before and after cleaning.
-- Confirm duplicate-removal and missing-value rules are appropriate.
-- Check data types and key columns after export.
-- Keep raw input separate from cleaned output so the transformation can be reviewed.
+- Exact duplicate rows are removed; business-key duplicates require a domain-specific rule.
+- Column names are trimmed, lowercased, and spaces are replaced with underscores. Normalization collisions raise an error.
+- Numeric missing values use the median; other columns use the most frequent observed value.
+- All-null columns remain null because there is no observed value to impute.
+- These are demonstration defaults, not universal rules. Check outliers, field meaning, and downstream effects before using the method on real data.
 
-## Tools
-
-Python, pandas, Jupyter Notebook, Git, and GitHub.
-
-This project demonstrates data preparation fundamentals. Add a small validation test suite and a before/after quality summary to make the workflow stronger and easier to verify.
+The input is a sample dataset. Check its provenance and license before redistribution or commercial use.
