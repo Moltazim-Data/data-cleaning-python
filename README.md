@@ -1,18 +1,26 @@
 # Data Cleaning with Python
 
-A small data preparation project using Python and pandas. The workflow inspects a CSV, removes exact duplicate rows, normalizes column names, imputes numeric missing values with medians and non-numeric missing values with modes, and exports a cleaned file plus a quality summary.
+A reproducible pandas workflow for preparing tabular data: inspect a CSV, remove exact duplicates, normalize column names, handle missing values and export a cleaned dataset with a quality summary.
+
+## Workflow
+
+1. Read the source CSV and inspect its shape and columns.
+2. Remove exact duplicate rows.
+3. Normalize column names and detect collisions.
+4. Fill numeric missing values with medians and other columns with modes.
+5. Export the cleaned file and a JSON quality summary.
 
 ## Files
 
-- `data/customer_data.csv` — bundled sample input. **Despite the legacy filename, its columns describe restaurant bills/tips (for example `total_bill`, `tip`, `sex`, `smoker`, `day`, `time`, and `size`), not a customer CRM table.**
-- `data_cleaning.py` — reproducible cleaning script.
-- `notebooks/data_cleaning.ipynb` — step-by-step notebook.
-- `tests/test_data_cleaning.py` — checks duplicate handling, missing-value behavior, and column-name collisions.
-- `data/customer_data_cleaned.csv` and `data/cleaning_summary.json` — generated outputs.
+- `data/customer_data.csv` — sample input (legacy filename; the fields describe restaurant bills/tips, not CRM customers).
+- `data_cleaning.py` — reusable script.
+- `notebooks/data_cleaning.ipynb` — walkthrough.
+- `tests/test_data_cleaning.py` — behavior tests.
+- `data/customer_data_cleaned.csv`, `data/cleaning_summary.json` — generated outputs.
 
 ## Run
 
-Python 3.10+ recommended. From the repository root:
+Python 3.10+ recommended.
 
 ```bash
 python -m pip install pandas pytest
@@ -20,14 +28,8 @@ python data_cleaning.py
 python -m pytest -q
 ```
 
-The script uses paths relative to its own file, so it can be launched from another working directory too.
+Paths are resolved relative to the script, so it can be run from another working directory.
 
-## Cleaning rules and limitations
+## Notes
 
-- Exact duplicate rows are removed; business-key duplicates require a domain-specific rule.
-- Column names are trimmed, lowercased, and spaces are replaced with underscores. Normalization collisions raise an error.
-- Numeric missing values use the median; other columns use the most frequent observed value.
-- All-null columns remain null because there is no observed value to impute.
-- These are demonstration defaults, not universal rules. Check outliers, field meaning, and downstream effects before using the method on real data.
-
-The input is a sample dataset. Check its provenance and license before redistribution or commercial use.
+These are demonstration cleaning rules, not one-size-fits-all defaults. Review outliers, field meaning and downstream impact before imputing real data. All-null columns remain null. Check the sample dataset's provenance and license before redistribution.
